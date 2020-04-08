@@ -1,5 +1,4 @@
 <template>
-  
   <a-card :bordered="false">
     <div class="table-operator">
      <!-- <a-dropdown>

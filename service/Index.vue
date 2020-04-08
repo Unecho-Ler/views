@@ -5,24 +5,18 @@
         <div class="account-settings-info-left">
           <a-menu
             :mode="device == 'mobile' ? 'horizontal' : 'inline'"
-            :style="{ border: '0', width: device == 'mobile' ? '560px' : 'auto'}"
             :selectedKeys="selectedKeys"
             type="inner"
             @openChange="onOpenChange"
           >
-            <a-menu-item key="/userset/userlist">
-              <router-link :to="{ name: 'userlist' }">
-                用户管理
+            <a-menu-item key="/service/systemservice">
+              <router-link :to="{ name: 'Systemservice' }">
+                系统服务
               </router-link>
             </a-menu-item>
-            <a-menu-item key="/userset/userGrouplist">
-              <router-link :to="{ name: 'userGrouplist' }">
-                用户组管理
-              </router-link>
-            </a-menu-item>
-            <a-menu-item key="/userset/NasUser">
-              <router-link :to="{ name: 'NasUser' }">
-                共享用户
+            <a-menu-item key="/service/mbabackup">
+              <router-link :to="{ name: 'mbabackup' }">
+                MBA服务
               </router-link>
             </a-menu-item>
           </a-menu>
@@ -55,7 +49,6 @@ export default {
 
       openKeys: [],
       selectedKeys: [],
-
       // cropper
       preview: {},
       option: {

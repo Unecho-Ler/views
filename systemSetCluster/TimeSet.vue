@@ -2,7 +2,7 @@
   <a-card class="card" >
   <div style="width:100%">
     <div style="min-width: 200px;width:30%;float: left;">
-        <a-table :columns="sys_columns" :dataSource="sys_data":pagination="false"/>
+        <a-table :columns="sys_columns" :dataSource="sys_data":pagination="false" />
     </div > 
     <div style="min-width: 400px;width:70%;float: left;">
     <!-- table -->
@@ -11,20 +11,40 @@
         :dataSource="data"
         :pagination="false"
         :loading="memberLoading"
-        :size="small"
       >
-        <template v-for="(col, i) in ['dvalue', 'workId']" :slot="col" slot-scope="text, record">
-          <span v-if="record.key==='12'">
+        <template v-for="(col, i) in ['dvalue']" :slot="col" slot-scope="text, record">
+          <span v-if="record.key==='1'">
+            <a-date-picker
+              :key="col"
+              v-if="record.editable"
+              style="margin: -5px 0"
+              @change="e => handleChange(e.target.value, record.key, col)"
+            />
+            <a-time-picker
+              :key="col"
+              v-if="record.editable"
+              style="margin: -5px 0"
+              @change="e => handleChange(e.target.value, record.key, col)"
+            />
+            <!-- 
+              <a-date-picker :defaultValue="moment('2019-10-01', 'YYYY-MM-DD')" />
+              <a-time-picker/> -->
+          </span>
+          <span v-if="record.key==='2'">
             <a-select
               :key="col"
               v-if="record.editable"
               style="margin: -5px 0,width:200px"
               @change="e => handleChange(e.target.value, record.key, col)"
-            >  <a-select-option value="集群管理节点">集群管理节点</a-select-option>
+            >  <a-select-option value="UTC+4:00 莫斯科">UTC+4:00 莫斯科</a-select-option>
+            <a-select-option value="UTC+5:00 伊斯兰堡">UTC+5:00 伊斯兰堡</a-select-option>
+            <a-select-option value="UTC+6:00 阿斯塔纳">UTC+6:00 阿斯塔纳</a-select-option>
+            <a-select-option value="UTC+7:00 曼谷">UTC+7:00 曼谷</a-select-option>
+            <a-select-option value="UTC+8:00 北京">UTC+8:00 北京</a-select-option>
+            <a-select-option value="UTC+9:00 东京">UTC+9:00 东京</a-select-option>
             </a-select>
-            <template >{{ text }}</template>
-          </span>
-          <span v-else>
+            </span>
+          <span v-if="record.key > '2'"> 
           <a-input
             :key="col"
             v-if="record.editable"
@@ -32,12 +52,26 @@
             :value="text"
             @change="e => handleChange(e.target.value, record.key, col)"
           />
-          <template >{{ text }}</template>
-         </span>
+          </span>
+          <template >
+            <span v-if="record.key==='3'"><a-checkbox /></span>
+            <span v-if="record.key==='4'"><a-textarea
+          rows="4"
+          placeholder="1.cnpool.ntp.org
+1.asia.pool.net.org
+0.asia.pool.net.org"
+          v-decorator="[
+            'description',
+          ]" />
+          </span>
+            {{ text }}
+            </template>
         </template>
         <template slot="operation" slot-scope="text, record">
           <template v-if="record.editable">
             <span v-if="record.isNew">
+              <a-date-picker :defaultValue="moment('2019-10-01', 'YYYY-MM-DD')" />
+              <a-time-picker/>
             </span>
             <span v-else>
               <a @click="saveRow(record)">保存</a>
@@ -58,6 +92,7 @@
 </template>
 <script>
 // import RepositoryForm from './RepositoryForm'
+// import TaskForm from './TaskForm'
 import FooterToolBar from '@/components/FooterToolbar'
 import { mixin, mixinDevice } from '@/utils/mixin'
 
@@ -77,14 +112,14 @@ const fieldLabels = {
 }
 
 export default {
-  name: 'SystemInfor',
+  name: 'AdvancedForm',
   mixins: [mixin, mixinDevice],
   components: {
     FooterToolBar
   },
   data () {
     return {
-      description: '显示系统基本信息，并支持修改设备名、访问端口以及系统保留内存。',
+      description: '修改系统时间、系统时区以及NTP服务器的状态及NTP服务器地址清单。',
       loading: false,
       memberLoading: false,
       sys_columns: [
@@ -99,56 +134,15 @@ export default {
       sys_data: [
         {
           key: '1',
-          name: '设备名'
+          name: '当前系统时间'
         },
         {
           key: '2',
-          name: '访问端口'
+          name: '系统所在时区'
         },
         {
           key: '3',
-          name: '用户名称'
-        },
-        {
-          key: '4',
-          name: '登录时间'
-        },
-        {
-          key: '5',
-          name: '用户级别'
-        },
-        {
-          key: '6',
-          name: '系统运行时长'
-        },
-        {
-          key: '7',
-          name: '版本信息'
-        },
-        {
-          key: '8',
-          name: '制造商'
-        },
-        {
-          key: '9',
-          name: '内存大小'
-        },
-        {
-          key: '10',
-          name: '系统保留内存'
-        },
-        ,
-        {
-          key: '11',
-          name: '系统码'
-        },
-        {
-          key: '12',
-          name: '集群状态'
-        },
-        {
-          key: '13',
-          name: '全局启动器'
+          name: 'NTP服务器'
         }
       ],
       // table
@@ -168,81 +162,27 @@ export default {
       data: [
         {
           key: '1',
-          dvalue: 'marserver',
+          dvalue: '2019-09-20 08:57:32',
           editable: false,
           saveable:true
         },
         {
           key: '2',
-          dvalue: '80',
+          dvalue: 'UTC +8:00 北京',
           editable: false,
           saveable:true
         },
         {
           key: '3',
-          dvalue: 'admin',
+          dvalue: '启用NTP服务',
           editable: false,
           saveable:false
         },
         {
           key: '4',
-          dvalue: '2019-09-20 08:55:47',
-          editable: false,
-          saveable:false
-        },
-        {
-          key: '5',
-          dvalue: '管理员',
-          editable: false,
-          saveable:false
-        },
-        {
-          key: '6',
-          dvalue: '4天21小时42分钟',
-          editable: false,
-          saveable:false
-        },
-        {
-          key: '7',
-          dvalue: 'Mars Storage Application V6.1',
-          editable: false,
-          saveable:false
-        },
-        {
-          key: '8',
-          dvalue: '北京亚细亚智业科技有限公司',
-          editable: false,
-          saveable:false
-        },
-        {
-          key: '9',
-          dvalue: '16GB',
-          editable: false,
-          saveable:false
-        },
-        {
-          key: '10',
-          dvalue: '1GB',
+          dvalue: '',
           editable: false,
           saveable:true
-        },
-        {
-          key: '11',
-          dvalue: '306C73627566696D',
-          editable: false,
-          saveable:false
-        },
-        {
-          key: '12',
-          dvalue: '单机运行',
-          editable: false,
-          saveable:true
-        },
-        {
-          key: '13',
-          dvalue: 'iqn.1986-03.com.sun:01:e000000000.59dc6ab7(开启Initiator服务后显示该行)',
-          editable: false,
-          saveable:false
         }
       ],
 

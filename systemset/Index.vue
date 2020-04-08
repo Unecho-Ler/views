@@ -5,24 +5,23 @@
         <div class="account-settings-info-left">
           <a-menu
             :mode="device == 'mobile' ? 'horizontal' : 'inline'"
-            :style="{ border: '0', width: device == 'mobile' ? '560px' : 'auto'}"
             :selectedKeys="selectedKeys"
             type="inner"
             @openChange="onOpenChange"
           >
-            <a-menu-item key="/userset/userlist">
-              <router-link :to="{ name: 'userlist' }">
-                用户管理
+            <a-menu-item key="/systemset/SystemInfor">
+              <router-link :to="{ name: 'SystemInfor' }">
+                系统基本参数
               </router-link>
             </a-menu-item>
-            <a-menu-item key="/userset/userGrouplist">
-              <router-link :to="{ name: 'userGrouplist' }">
-                用户组管理
+            <a-menu-item key="/systemset/TimeSet">
+              <router-link :to="{ name: 'TimeSet' }">
+                系统时间设置
               </router-link>
             </a-menu-item>
-            <a-menu-item key="/userset/NasUser">
-              <router-link :to="{ name: 'NasUser' }">
-                共享用户
+            <a-menu-item key="/systemset/DomainSet">
+              <router-link :to="{ name: 'DomainSet' }">
+                域状态设置
               </router-link>
             </a-menu-item>
           </a-menu>

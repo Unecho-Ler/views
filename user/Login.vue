@@ -8,12 +8,12 @@
       :form="form"
       @submit="handleSubmit"
     >
-      <div style="float: left;width: 55%;">
+      <div style="float: left;width: 53%;margin-left: 3%;">
         <div style="float:right">
-          <img src="../../assets/left_logo.png" class="logo" alt="logo">
+          <img src="../../assets/left_logo.png" style="width: 98%;height: 98%;min-height: 450px;min-width: 675px;" class="logo" alt="logo">
         </div>
       </div>
-      <div style="float: left;width: 45%;">
+      <div style="float: left;width: 42%;">
         <div style="margin-top:90px;">
           <div style="margin-bottom: 30px;width:50px">
             <img src="~@/assets/logo.png" class="logo" alt="logo">

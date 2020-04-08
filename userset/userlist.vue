@@ -1,52 +1,10 @@
 <template>
     <a-card :bordered="false">
-      <div class="table-page-search-wrapper">
-        <a-form layout="inline">
-          <a-row :gutter="48">
-            <a-col :md="8" :sm="24">
-              <a-form-item label="搜索类型">
-                <a-select v-model="queryParam.status" placeholder="请选择" default-value="0">
-                  <a-select-option value="0">用户</a-select-option>
-                  <a-select-option value="1">用户组</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-            <a-col :md="8" :sm="24">
-              <a-form-item label="用户/用户组名称">
-                <a-input v-model="queryParam.id" placeholder=""/>
-              </a-form-item>
-            </a-col>
-            <a-col :md="!advanced && 8 || 24" :sm="24">
-              <span class="table-page-search-submitButtons" :style="advanced && { float: 'right', overflow: 'hidden' } || {} ">
-                <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
-                <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
-              </span>
-            </a-col>
-          </a-row>
-        </a-form>
-      </div>
-      <div class="table-operator">
-        <a-button type="primary" icon="plus" @click="() => Add_Userm(true)">新建用户组</a-button>
-        <a-dropdown v-if="hasSelected">
-          <a-menu slot="overlay">
-            <a-menu-item key="1">
-              <a-popconfirm placement="top" okText="Yes" cancelText="No" @confirm="confirm">
-               <template slot="title">
-                 <p>是否确定删除该用户组及组下所有用户？</p>
-               </template>
-               <a><a-icon type="delete" />删除用户</a>
-             </a-popconfirm></a-menu-item>
-          </a-menu>
-          <a-button style="margin-left: 8px">
-            批量操作 <a-icon type="down" />
-          </a-button>
-        </a-dropdown>
+      <div>
+      	<a-alert message="*********" banner closable />
       </div>
       <div>
-      	<a-alert message="用户权限不可超越用户组权限,如需要添加更多权限则仅需要添加组权限,该用户即可继承权限,或者调整用户所在分组" banner closable />
-      </div>
-      <div>
-         <a-table :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}":columns="columns" :dataSource="data" :pagination="false" >
+         <a-table :columns="columns" :dataSource="data" :pagination="false" >
            <span slot="permission" slot-scope="permission">
              <a-tag
                v-for="tag in permission"
@@ -57,52 +15,7 @@
              </a-tag>
            </span>
            <span slot="action" slot-scope="text, record">
-             <span v-if="record.key > '14'">
-              <a-dropdown :trigger="['click']">
-                 <a class="ant-dropdown-link" > 配置<a-icon type="down" /> </a>
-                 <a-menu slot="overlay">
-                    <a-menu-item key="0">
-                      <span><a @click="() => setNet_Ip(true)">修改密码</a></span>
-                    </a-menu-item>
-                    <a-menu-item key="1">
-                      <span><a @click="() => setNet_Dns(true)">修改有效期</a></span>
-                    </a-menu-item>
-                    <a-menu-item key="2">
-                      <span>
-                        <a @click="() => modifyNet_Router(true)">修改权限</a>
-                      </span>
-                    </a-menu-item>
-                    <a-menu-item key="3">
-                      <span>
-                        <a @click="() => modifyNet_Router(true)">添加用户</a>
-                      </span>
-                    </a-menu-item>
-                 </a-menu>
-               </a-dropdown>
-             </span>
-             <span v-else-if="record.key < '13'">
-               <a-dropdown :trigger="['click']">
-                  <a class="ant-dropdown-link" > 配置<a-icon type="down" /> </a>
-                  <a-menu slot="overlay">
-                     <a-menu-item key="0">
-                       <span><a @click="() => setNet_Ip(true)">修改密码</a></span>
-                     </a-menu-item>
-                     <a-menu-item key="1">
-                       <span><a @click="() => setNet_Dns(true)">修改有效期</a></span>
-                     </a-menu-item>
-                     <a-menu-item key="2">
-                       <span>
-                         <a @click="() => modifyNet_Router(true)">修改权限</a>
-                       </span>
-                     </a-menu-item>
-                     <a-menu-item key="3">
-                       <span>
-                         <a @click="() => modifyNet_Router(true)">更换分组</a>
-                       </span>
-                     </a-menu-item>
-                  </a-menu>
-                </a-dropdown>
-             </span>
+               <a href="javascript:;">密码管理</a>
            </span>
         </a-table>
       </div>
@@ -124,13 +37,11 @@ const columns = [
       title: '用户组及用户',
       dataIndex: 'modle',
       key: 'modle',
-      width: '200px',
     },
     {
       title: '描述',
       dataIndex: 'describe',
-      scopedSlots: { customRender: 'describe' },
-      width: '200px',
+      scopedSlots: { customRender: 'describe' }
     },
     {
       title: '权限',
@@ -140,49 +51,34 @@ const columns = [
     {
       title: '操作',
       dataIndex: 'action',
-      width: '100px',
+      width: '90px',
       scopedSlots: { customRender: 'action' }
     }
   ];
   const data = [
-    
     {
-      key: '19',
-      modle: 'test',
-      describe: '测试账户组',
-      permission: ['VTL_2TB','NAS_1TB','CDM','CDP_1TB'],
-      children:[
-        {
-          key: '10',
-          modle: 'test',
-          describe: '测试账户1',
-          permission: ['CDM'],
-        },{
-          key: '11',
-          modle: 'test1',
-          describe: '测试账户2',
-          permission: ['CDM','CDP_1TB'],
-        },
-      ]
+      key: '20',
+      modle: 'admin',
+      describe: '超级管理员',
+      permission: ['super_admin'],
     },
     {
-      key: '18',
-      modle: 'ppp',
-      describe: '研发部测试账户组',
-      permission: ['VTL_2TB','NAS','CDM','CDP_1TB','远程控制','自定义1'],
-      children:[
-        {
-          key: '9',
-          modle: 'pp_t',
-          describe: '研发测试账户1',
-          permission: ['CDM_Oracle','NAS'],
-        },{
-          key: '8',
-          modle: 'pp_m',
-          describe: '研发账户2',
-          permission: ['CDM_SQL','远程控制','自定义1'],
-        },
-      ]
+      key: '21',
+      modle: 'dev_admin',
+      describe: '系统管理员',
+      permission: ['dev_admin'],
+    },
+    {
+      key: '22',
+      modle: 'job_admin',
+      describe: '安全保密管理员',
+      permission: ['job_admin'],
+    },
+    {
+      key: '23',
+      modle: 'audit_admin',
+      describe: '安全审计员',
+      permission: ['auditor'],
     },
   ];
 export default {

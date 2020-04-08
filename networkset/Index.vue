@@ -5,24 +5,23 @@
         <div class="account-settings-info-left">
           <a-menu
             :mode="device == 'mobile' ? 'horizontal' : 'inline'"
-            :style="{ border: '0', width: device == 'mobile' ? '560px' : 'auto'}"
             :selectedKeys="selectedKeys"
             type="inner"
             @openChange="onOpenChange"
           >
-            <a-menu-item key="/userset/userlist">
-              <router-link :to="{ name: 'userlist' }">
-                用户管理
+            <a-menu-item key="/networkset/configipv4">
+              <router-link :to="{ name: 'Ipv4ListWrapper' }">
+                IPv4
               </router-link>
             </a-menu-item>
-            <a-menu-item key="/userset/userGrouplist">
-              <router-link :to="{ name: 'userGrouplist' }">
-                用户组管理
+            <a-menu-item key="/networkset/configipv6">
+              <router-link :to="{ name: 'Ipv6ListWrapper' }">
+                IPv6
               </router-link>
             </a-menu-item>
-            <a-menu-item key="/userset/NasUser">
-              <router-link :to="{ name: 'NasUser' }">
-                共享用户
+            <a-menu-item key="/networkset/Infinband">
+              <router-link :to="{ name: 'InfinbandListWrapper' }">
+                IB
               </router-link>
             </a-menu-item>
           </a-menu>
@@ -55,7 +54,6 @@ export default {
 
       openKeys: [],
       selectedKeys: [],
-
       // cropper
       preview: {},
       option: {
